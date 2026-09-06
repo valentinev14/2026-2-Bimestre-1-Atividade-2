@@ -10,6 +10,11 @@ ENV PATH="/opt/kotlinc/bin:${PATH}"
 WORKDIR /app
 COPY . /app
 
-RUN kotlinc Main.kt -include-runtime -d Main.jar
+RUN wget https://repo1.maven.org/maven2/org/jetbrains/kotlinx/kotlinx-coroutines-core-jvm/1.8.1/kotlinx-coroutines-core-jvm-1.8.1.jar
 
-CMD ["java", "-jar", "Main.jar"]
+RUN kotlinc ./src/kotlin/thread-1.kt \
+    -classpath kotlinx-coroutines-core-jvm-1.8.1.jar \
+    -include-runtime \
+    -d Main.jar
+
+CMD ["java", "-cp", "Main.jar:kotlinx-coroutines-core-jvm-1.8.1.jar", "Thread_1Kt"]
